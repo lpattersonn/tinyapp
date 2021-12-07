@@ -26,7 +26,12 @@ app.post("/urls", (req, res) => {
   urlDatabase[shortURL] = req.body.longURL
   res.redirect(`/urls/${shortURL}`);         // Respond with 'Ok' (we will replace this)
 });
-
+// Long URL redirect 
+app.get("/u/:shortURL", (req, res) => {
+  const longURL = urlDatabase[req.params.shortURL]
+  res.redirect(longURL);
+});
+// Homepage 
 app.get("/", (req,res) => {
   res.send("hello!")
 });
@@ -36,6 +41,7 @@ app.get("/urls.json", (req, res) => {
 app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</></body></html>\n");
 });
+// URLS page
 app.get("/urls", (req, res) => {
   const templateVars = { urls: urlDatabase };
   res.render("urls_index", templateVars);
