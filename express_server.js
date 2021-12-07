@@ -17,11 +17,16 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 const bodyParser = require("body-parser");
+
 app.use(bodyParser.urlencoded({extended: true}));
+
 app.post("/urls", (req, res) => {
   console.log(req.body);  // Log the POST request body to the console
-  res.send(generateRandomString());         // Respond with 'Ok' (we will replace this)
+  shortURL = generateRandomString()
+  urlDatabase[shortURL] = req.body.longURL
+  res.redirect(`/urls/${shortURL}`);         // Respond with 'Ok' (we will replace this)
 });
+
 app.get("/", (req,res) => {
   res.send("hello!")
 });
