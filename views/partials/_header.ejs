@@ -8,14 +8,14 @@
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
-        <% if(!user) { %>
-          <a class="nav-item nav-link" href="/login">Login</a>
-          <a class="nav-item nav-link" href="/register">Register</a>
-          <% } %>
         <div class="navbar-nav">
       </div>
       </div>
     </div>
+    <% if(!user) { %>
+      <a class="nav-item nav-link" style="color:rgba(199, 199, 199, 0.918)" href="/login">Login</a>
+      <a class="nav-item nav-link" style="color:rgba(199, 199, 199, 0.918)" href="/register">Register</a>
+      <% } %>
     <% if(user) { %>
       <form method="POST" action="/logout">
         <%= `Logged in as: ${user.email}!` %>

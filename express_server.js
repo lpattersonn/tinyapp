@@ -16,10 +16,10 @@ function generateRandomString() {
   result += chars[Math.floor(Math.random() * chars.length)];
   return result;
 };
-// Email lookup
-function emailLookup (objectOne, check) {
+// user info lookup
+function userLookup (objectOne, info, check) {
   for (const objectTwo in objectOne) { 
-      if (objectOne[objectTwo]["email"] === check) {
+      if (objectOne[objectTwo][info] === check) {
         return true;
     }  
   } return false;
@@ -42,6 +42,9 @@ const users = {
     password: "dishwasher-funk"
   }
 };
+// Random user ID
+
+const userID = `user${generateRandomString()}ID`;
 
 const bodyParser = require("body-parser");
 const { escapeXML } = require("ejs");
@@ -71,11 +74,18 @@ app.post("/urls", (req, res) => {
 
 // Set cookie from login form
 app.post("/login", (req, res) => {
-  res.cookie('username', req.body.username)
-  res.redirect("/urls");         // Redirect client to URLS page
+  if (!userLookup(users, "email", req.body.email)) {
+    res.status(403).send("A user with that email can not be found");
+  } if (userLookup(users, "email", req.body.email) && !userLookup(users, "password", req.body.password)) {
+    res.status(403).send("Entered email and password do not match");
+  } if (userLookup(users, "email", req.body.email) && userLookup(users, "password", req.body.password)) {
+      res.cookie("user_id", users[userID]["id"])
+      res.redirect("/urls")
+    console.log(users) // Updated User check
+  }
 });
 
-// Clear username cookie
+// Clear user_id cookie
 app.post("/logout", (req, res) => {
   res.clearCookie('user_id')
   res.redirect("/urls")
@@ -85,15 +95,14 @@ app.post("/logout", (req, res) => {
 app.post("/register", (req, res) => {
       if (req.body.email === "" || req.body.password === "") {
         return res.status(400).send("Please enter a valid email and password");
-     } if (emailLookup(users, req.body.email)) {
+     } if (userLookup(users, "email", req.body.email)) {
        return res.status(400).send("A user with this email already exists");
       } else {
-        const userID = `user${generateRandomString()}ID`
     users[userID] = {id: userID,
       email: req.body.email,
       password: req.body.password
       };
-      console.log(users) // Updated User check
+      console.log(users)
       res.cookie("user_id", userID)
       res.redirect("/urls")
       }
