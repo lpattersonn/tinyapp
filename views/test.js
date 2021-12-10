@@ -1,3 +1,36 @@
+/* This also means that the /urls page will need to filter the entire
+list in the urlDatabase by comparing the userID with the logged-in user's ID.
+This filtering process should happen before the data is sent to the template for rendering. 
+
+Create a function named urlsForUser(id) which returns the URLs where the userID is equal to the id of the currently logged-in user.
+*/
+
+function urlsForUser(database, userid) {
+  newObj = {};
+  for (let id in database) {
+    if (database[id]["userID"] === userid) {
+      newObj[id] = (database[id]);
+    }
+  } return newObj;
+};
+const urlDatabase = {
+  b6UTxQ: {
+      longURL: "https://www.tsn.ca",
+      userID: "aJ48lW"
+  },
+  i3BoGr: {
+      longURL: "https://www.google.ca",
+      userID: "aJ481W"
+  },
+  i3BoGd: {
+    longURL: "https://www.tsn.com",
+    userID: "aJ48lW"
+}
+};
+console.log(urlsForUser(urlDatabase, "aJ48lW"))
+
+// express code
+
 
 const express = require("express");
 const app = express();
@@ -62,7 +95,7 @@ const users = {
 };
 // Random user ID
 
-
+const userID = `user${generateRandomString()}ID`;
 
 const bodyParser = require("body-parser");
 const { escapeXML } = require("ejs");
@@ -107,13 +140,9 @@ app.post("/login", (req, res) => {
   } if (userLookup(users, "email", req.body.email) && !userLookup(users, "password", req.body.password)) {
     res.status(403).send("Entered email and password do not match");
   } if (userLookup(users, "email", req.body.email) && userLookup(users, "password", req.body.password)) {
-    for (const objectTwo in users) { 
-      if (users[objectTwo]["email"] === req.body.email && users[objectTwo]["password"] === req.body.password) {
-    res.cookie("user_id", users[objectTwo]["id"]);
-    res.redirect("/urls")
+      res.cookie("user_id", users[userID]["id"])
+      res.redirect("/urls")
     console.log(users) // Updated User check
-      }
-    }
   }
 });
 
@@ -130,12 +159,10 @@ app.post("/register", (req, res) => {
      } if (userLookup(users, "email", req.body.email)) {
        return res.status(400).send("A user with this email already exists");
       } else {
-        const userID = `user${generateRandomString()}ID`;
     users[userID] = {id: userID,
       email: req.body.email,
       password: req.body.password
       };
-      console.log(users)
       res.cookie("user_id", userID)
       res.redirect("/urls")
       }
@@ -156,9 +183,9 @@ app.get("/u/:shortURL", (req, res) => {
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
-/*app.get("/hello", (req, res) => {
+app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</></body></html>\n");
-});*/
+});
 
 // URLS pages
 app.get("/urls", (req, res) => {
@@ -177,15 +204,12 @@ app.get("/urls/new", (req, res) => {
 }
 });
 app.get("/urls/:shortURL", (req, res) => {
-
   const templateVars = { 
   shortURL: req.params.shortURL, 
   longURL: urlDatabase[req.params.shortURL]["longURL"],
   userIDY: urlDatabase[req.params.shortURL]["userID"],
-  userOne: users[req.cookies.user_id]["id"],
   user: users[req.cookies.user_id]
   };
-
   res.render("urls_show", templateVars);
 });
 

@@ -21,21 +21,30 @@
           <th scope="col">Delete</th>
         </tr>
       </thead>
-      <tbody>
-        <link rel="" href=#>
-        <% for(let url in urls) { %>
-          <tr>
-            <td><%= url %></td>
-            <td><%= urls[url] %></td>
-             <!-- Edit and delete buttons -->
-            <td>
-              <form method="GET" action="/urls/<%= url %>"><button class="btn btn-outline-primary">Edit</button></form> 
-            </td>
-            <td>
-              <form method="POST" action="/urls/<%= url %>delete"><button class="btn btn-outline-danger">Delete</button></form> 
-            </td>
-          </tr>
-        <% } %>
+        <% if(user) { %>
+          <tbody>
+            <link rel="" href=#>
+          <% for(let url in urls) { %>
+            <tr>
+              <td><%= url %></td>
+              <td><%= urls[url]["longURL"] %></td>
+              <td><%= urls[url]["userID"] %></td>
+               <!-- Edit and delete buttons -->
+              <td>
+                <form method="GET" action="/urls/<%= url %>"><button class="btn btn-outline-primary">Edit</button></form> 
+              </td>
+              <td>
+                <form method="POST" action="/urls/<%= url %>delete"><button class="btn btn-outline-danger">Delete</button></form> 
+              </td>
+            </tr>
+          <% } %>
+            <% } %>
+            <% if(!user) { %>
+            <div class="alert">
+              <span class="closebtn" onclick="this.parentElement.style.display='none';" style= "color: red">&times;</span>
+              You must be logged in access URL database. Please login or register to see URL!
+            </div>
+            <% } %>
       </tbody>
     </table>
   </main>
