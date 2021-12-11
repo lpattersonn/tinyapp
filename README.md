@@ -4,9 +4,9 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 
-!["screenshot of urls page"](https://github.com/lpattersonn/tinyapp/blob/master/docs/urls-page.png?raw=true)
+!["Screenshot of urls page"](https://github.com/lpattersonn/tinyapp/blob/master/docs/urls-page.png?raw=true)
 
-!["screenshot of shorturl page"](https://github.com/lpattersonn/tinyapp/blob/master/docs/shorturl-page.png?raw=true)
+!["Screenshot of shorturl page"](https://github.com/lpattersonn/tinyapp/blob/master/docs/shorturl-page.png?raw=true)
 
 ## Dependencies
 
@@ -34,12 +34,12 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## User Database
 
-- Update `express_server.js` to display the correct status messages if the user is trying to register using an existing email, or if trying to register with bad credentials (empty password feild).
-- Set permission according to intended redirect after sucessful login or register.
+- Update `express_server.js` to display the correct status messages if the user is trying to register using an existing email, or if trying to register with bad credentials (empty password field).
+- Set permission according to intended redirect after successful login or register.
 
 ## Passwords
 
-- Encryprt user passwords using bcryptjs for an inproved user password protection.
+- Encrypt user passwords using bcryptjs for an improved user password protection.
 
 ## Cookies
 
