@@ -28,13 +28,12 @@
             <tr>
               <td><%= url %></td>
               <td><%= urls[url]["longURL"] %></td>
-              <td><%= urls[url]["userID"] %></td>
                <!-- Edit and delete buttons -->
               <td>
                 <form method="GET" action="/urls/<%= url %>"><button class="btn btn-outline-primary">Edit</button></form> 
               </td>
               <td>
-                <form method="POST" action="/urls/<%= url %>delete"><button class="btn btn-outline-danger">Delete</button></form> 
+                <form method="POST" action="/urls/<%= url %>/delete"><button class="btn btn-outline-danger">Delete</button></form> 
               </td>
             </tr>
           <% } %>
