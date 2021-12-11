@@ -5,33 +5,30 @@ This filtering process should happen before the data is sent to the template for
 Create a function named urlsForUser(id) which returns the URLs where the userID is equal to the id of the currently logged-in user.
 */
 
-function urlsForUser(database, userid) {
-  newObj = {};
-  for (let id in database) {
-    if (database[id]["userID"] === userid) {
-      newObj[id] = (database[id]);
-    }
-  } return newObj;
+function userLookupObj(objectOne, info, check) {
+  for (const objectTwo in objectOne) { 
+      if (objectOne[objectTwo][info] === check) {
+        return objectOne[objectTwo];
+    }  
+  } return false;
 };
-const urlDatabase = {
-  b6UTxQ: {
-      longURL: "https://www.tsn.ca",
-      userID: "aJ48lW"
+const users = { 
+  "userRandomID": {
+    id: "userRandomID", 
+    email: "user@example.com", 
+    password: "purple-monkey-dinosaur"
   },
-  i3BoGr: {
-      longURL: "https://www.google.ca",
-      userID: "aJ481W"
-  },
-  i3BoGd: {
-    longURL: "https://www.tsn.com",
-    userID: "aJ48lW"
-}
+ "user2RandomID": {
+    id: "user2RandomID", 
+    email: "user2@example.com", 
+    password: "dishwasher-funk"
+  }
 };
-console.log(urlsForUser(urlDatabase, "aJ48lW"))
+console.log(userLookupObj(users, "email", "user2@example.com"))
 
 // express code
 
-
+/* 
 const express = require("express");
 const app = express();
 const PORT = 8080;
@@ -179,7 +176,7 @@ app.get("/u/:shortURL", (req, res) => {
 // Homepage 
 /*app.get("/", (req,res) => {
   //res.send("hello!")
-});*/
+});
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
@@ -233,4 +230,4 @@ app.get("/login", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`)
-});
+}); */
